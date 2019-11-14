@@ -1,5 +1,6 @@
 import React, { Component } from "react"
-class ChatForm extends Component {
+import { connect } from 'react-redux'
+class UnconnectedChatForm extends Component {
     constructor(props) {
         super(props)
         this.state = { message: "" }
@@ -19,6 +20,10 @@ class ChatForm extends Component {
             credentials: "include"
         })
     }
+    logout = () => {
+        fetch("/logout")
+        this.props.dispatch({ type: "logout" })
+    }
     render = () => {
         return (
             <div>
@@ -26,7 +31,9 @@ class ChatForm extends Component {
                     <input onChange={this.handleMessageChange} type="text" />
                     <input type="submit" />
                 </form>
+                <button onClick={this.logout}>logout</button>
             </div>)
     }
 }
-export default ChatForm 
+let ChatForm = connect()(UnconnectedChatForm)
+export default ChatForm

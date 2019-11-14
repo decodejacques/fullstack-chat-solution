@@ -3,6 +3,9 @@ let reducer = (state, action) => {
     if (action.type === "login-success") {
         return { ...state, loggedIn: true }
     }
+    if (action.type === "logout") {
+        return { ...state, loggedIn: false }
+    }
     if (action.type === "set-messages") {
         return { ...state, msgs: action.messages }
     }

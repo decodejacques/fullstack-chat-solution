@@ -51,6 +51,13 @@ app.post("/login", upload.none(), (req, res) => {
 let generateId = () => {
   return "" + Math.floor(Math.random() * 100000000)
 }
+
+app.post("/logout", (req, res) => {
+  let sessionId = req.cookies.sid
+  let username = sessions[sessionId]
+  sessions[username] = undefined
+})
+
 app.post("/signup", upload.none(), (req, res) => {
   console.log("**** I'm in the signup endpoint")
   console.log("this is the body", req.body)
