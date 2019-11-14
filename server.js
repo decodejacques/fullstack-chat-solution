@@ -11,6 +11,10 @@ let messages = []
 reloadMagic(app)
 app.use('/', express.static('build'));
 app.get("/messages", function (req, res) {
+  if (sessions[req.cookies.sid] === undefined) {
+    res.send(JSON.stringify({ success: false }))
+    return
+  }
   res.send(JSON.stringify(messages))
 })
 app.post("/newmessage", upload.none(), (req, res) => {
