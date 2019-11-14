@@ -40,6 +40,7 @@ app.post("/login", upload.none(), (req, res) => {
   let expectedPassword = passwords[username]
   console.log("expected password", expectedPassword)
   if (enteredPassword === expectedPassword) {
+    messages.push({ username: username, message: "I've entered the chat!" })
     console.log("password matches")
     let sessionId = generateId()
     console.log("generated id", sessionId)
@@ -76,6 +77,7 @@ app.post("/signup", upload.none(), (req, res) => {
   console.log("generated id", sessionId)
   sessions[sessionId] = username
   res.cookie('sid', sessionId);
+  messages.push({ username: username, message: "I've entered the chat!" })
 
   res.send(JSON.stringify({ success: true }))
 })
