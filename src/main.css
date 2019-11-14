@@ -1,3 +1,7 @@
 body {
     background-color: #bbb;
 }
+
+.two-col {
+    display: flex
+}

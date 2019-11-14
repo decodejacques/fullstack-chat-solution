@@ -1,5 +1,17 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+let unique = arr => {
+    let obj = {}
+    arr.forEach(x => { obj[x] = true })
+    return Object.keys(obj)
+}
+let usernameList = names => {
+    return (<ul>
+        {unique(names).map(userName => {
+            return (<li>{userName}</li>)
+        })}
+    </ul>)
+}
 class UnconnectedChatMessages extends Component {
     componentDidMount = () => {
         let updateMessages = async () => {
@@ -15,11 +27,26 @@ class UnconnectedChatMessages extends Component {
         }
         setInterval(updateMessages, 500)
     }
+    usernames = () => {
+        let now = new Date() / 1
+        let recentMessages =
+            this.props.messages
+                .filter(msg => {
+                    return now - msg.timestamp < 5 * 60 * 1000
+                })
+        let recentNames = recentMessages
+            .map(msg => {
+                return msg.username
+            })
+        return recentNames
+    }
+
     render = () => {
         let msgToElement = e => <li> [{e.timestamp}] {e.username}:{e.message} </li>
         return (
-            <div>
-                <ul>{this.props.messages.map(msgToElement)}</ul>
+            <div class="two-col">
+                <div>{usernameList(this.usernames())}</div>
+                <div><ul>{this.props.messages.map(msgToElement)}</ul></div>
             </div>)
     }
 }
