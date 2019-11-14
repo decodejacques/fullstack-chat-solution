@@ -15,7 +15,9 @@ app.get("/messages", function (req, res) {
     res.send(JSON.stringify({ success: false }))
     return
   }
-  res.send(JSON.stringify(messages))
+  let msgs = [...messages]
+  while (msgs.length > 20) msgs.shift()
+  res.send(JSON.stringify(msgs))
 })
 app.post("/newmessage", upload.none(), (req, res) => {
   console.log("*** inside new message")
