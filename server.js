@@ -62,6 +62,12 @@ app.post("/signup", upload.none(), (req, res) => {
   }
   passwords[username] = enteredPassword
   console.log("passwords object", passwords)
+
+  let sessionId = generateId()
+  console.log("generated id", sessionId)
+  sessions[sessionId] = username
+  res.cookie('sid', sessionId);
+
   res.send(JSON.stringify({ success: true }))
 })
 app.all('/*', (req, res, next) => {
