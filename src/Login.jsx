@@ -8,6 +8,22 @@ class UnconnectedLogin extends Component {
             password: ""
         }
     }
+    componentDidMount = async () => {
+        let response = await fetch("/check-login", {
+            method: "POST",
+            credentials: "include"
+        })
+        let responseBody = await response.text()
+        console.log("responseBody from login", responseBody)
+        let body = JSON.parse(responseBody)
+        console.log("parsed body", body)
+        if (!body.success) {
+            return
+        }
+        this.props.dispatch({
+            type: "login-success"
+        })
+    }
     handleUsernameChange = event => {
         console.log("new username", event.target.value)
         this.setState({ username: event.target.value })

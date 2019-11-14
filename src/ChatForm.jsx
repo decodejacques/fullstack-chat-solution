@@ -21,7 +21,7 @@ class UnconnectedChatForm extends Component {
         })
     }
     logout = () => {
-        fetch("/logout")
+        fetch("/logout", { method: "POST" })//bugfix
         this.props.dispatch({ type: "logout" })
     }
     regret = () => {

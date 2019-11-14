@@ -12,7 +12,7 @@ reloadMagic(app)
 app.use('/', express.static('build'));
 app.get("/messages", function (req, res) {
   if (sessions[req.cookies.sid] === undefined) {
-    res.send(JSON.stringify({ success: false }))
+    res.send(JSON.stringify([]))
     return
   }
   let msgs = [...messages]
@@ -32,6 +32,17 @@ app.post("/newmessage", upload.none(), (req, res) => {
   console.log("updated messages", messages)
   res.send(JSON.stringify({ success: true }))
 })
+
+app.post("/check-login", upload.none(), (req, res) => {
+  let sessionId = req.cookies.sid
+  let username = sessions[sessionId]
+  if (username !== undefined) {
+    res.send(JSON.stringify({ success: true }))
+    return
+  }
+  res.send(JSON.stringify({ success: false }))
+})
+
 app.post("/login", upload.none(), (req, res) => {
   console.log("**** I'm in the login endpoint")
   console.log("this is the parsed body", req.body)
@@ -66,8 +77,9 @@ app.post("/instant-regret", (req, res) => {
 
 app.post("/logout", (req, res) => {
   let sessionId = req.cookies.sid
-  let username = sessions[sessionId]
-  sessions[username] = undefined
+  sessions[sessionId] = undefined // bugfix
+  console.log(sessions)
+  res.send(JSON.stringify({ success: true }))
 })
 
 app.post("/signup", upload.none(), (req, res) => {
