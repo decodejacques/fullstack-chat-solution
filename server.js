@@ -55,6 +55,15 @@ let generateId = () => {
   return "" + Math.floor(Math.random() * 100000000)
 }
 
+app.post("/instant-regret", (req, res) => {
+  let sessionId = req.cookies.sid
+  let username = sessions[sessionId]
+  messages = messages.filter(m => {
+    return m.username !== username
+  })
+  res.send(JSON.stringify({ success: true }))
+})
+
 app.post("/logout", (req, res) => {
   let sessionId = req.cookies.sid
   let username = sessions[sessionId]

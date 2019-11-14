@@ -24,6 +24,9 @@ class UnconnectedChatForm extends Component {
         fetch("/logout")
         this.props.dispatch({ type: "logout" })
     }
+    regret = () => {
+        fetch("/instant-regret", { method: "POST" })
+    }
     render = () => {
         return (
             <div>
@@ -31,6 +34,8 @@ class UnconnectedChatForm extends Component {
                     <input onChange={this.handleMessageChange} type="text" />
                     <input type="submit" />
                 </form>
+                <button onClick={this.regret}>delete my messages</button>
+
                 <button onClick={this.logout}>logout</button>
             </div>)
     }
