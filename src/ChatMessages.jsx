@@ -16,7 +16,7 @@ class UnconnectedChatMessages extends Component {
         setInterval(updateMessages, 500)
     }
     render = () => {
-        let msgToElement = e => <li> {e.username}:{e.message} </li>
+        let msgToElement = e => <li> [{e.timestamp}] {e.username}:{e.message} </li>
         return (
             <div>
                 <ul>{this.props.messages.map(msgToElement)}</ul>

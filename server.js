@@ -26,7 +26,7 @@ app.post("/newmessage", upload.none(), (req, res) => {
   let username = sessions[sessionId]
   console.log("username", username)
   let msg = req.body.msg
-  let newMsg = { username: username, message: msg }
+  let newMsg = { username: username, message: msg, timestamp: new Date() / 1 }
   console.log("new message", newMsg)
   messages = messages.concat(newMsg)
   console.log("updated messages", messages)
@@ -40,7 +40,7 @@ app.post("/login", upload.none(), (req, res) => {
   let expectedPassword = passwords[username]
   console.log("expected password", expectedPassword)
   if (enteredPassword === expectedPassword) {
-    messages.push({ username: username, message: "I've entered the chat!" })
+    messages.push({ username: username, message: "I've entered the chat!", timestamp: new Date() / 1 })
     console.log("password matches")
     let sessionId = generateId()
     console.log("generated id", sessionId)
@@ -86,7 +86,7 @@ app.post("/signup", upload.none(), (req, res) => {
   console.log("generated id", sessionId)
   sessions[sessionId] = username
   res.cookie('sid', sessionId);
-  messages.push({ username: username, message: "I've entered the chat!" })
+  messages.push({ username: username, message: "I've entered the chat!", timestamp: new Date() / 1 })
 
   res.send(JSON.stringify({ success: true }))
 })
