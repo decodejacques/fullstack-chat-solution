@@ -52,6 +52,10 @@ app.post("/signup", upload.none(), (req, res) => {
   console.log("this is the body", req.body)
   let username = req.body.username
   let enteredPassword = req.body.password
+  if (passwords[username] !== undefined) {
+    res.send(JSON.stringify({ success: false }))
+    return
+  }
   passwords[username] = enteredPassword
   console.log("passwords object", passwords)
   res.send(JSON.stringify({ success: true }))
