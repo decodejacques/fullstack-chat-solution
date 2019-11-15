@@ -20,6 +20,10 @@ class UnconnectedChatMessages extends Component {
             console.log("response from messages", responseBody)
             let parsed = JSON.parse(responseBody)
             console.log("parsed", parsed)
+            if (parsed.loggedOut) {
+                this.props.dispatch({ type: "logout" })
+                return
+            }
             this.props.dispatch({
                 type: "set-messages",
                 messages: parsed

@@ -5,14 +5,14 @@ let app = express()
 let cookieParser = require('cookie-parser')
 app.use(cookieParser());
 let reloadMagic = require('./reload-magic.js')
-let passwords = {}
+let passwords = { admin: "pwd123" }
 let sessions = {}
 let messages = []
 reloadMagic(app)
 app.use('/', express.static('build'));
 app.get("/messages", function (req, res) {
   if (sessions[req.cookies.sid] === undefined) {
-    res.send(JSON.stringify([]))
+    res.send(JSON.stringify({ loggedOut: true }))
     return
   }
   let msgs = [...messages]
@@ -32,6 +32,35 @@ app.post("/newmessage", upload.none(), (req, res) => {
   console.log("updated messages", messages)
   res.send(JSON.stringify({ success: true }))
 })
+
+
+
+app.post("/kickout", upload.none(), (req, res) => {
+  console.log("*** inside new message")
+  console.log("body", req.body)
+  let sessionId = req.cookies.sid
+  let username = sessions[sessionId]
+  if (username !== "admin") {
+    res.send(JSON.stringify({ success: false }))
+    return
+  }
+  console.log("username", username)
+  let victim = req.body.name
+  let allSids = Object.keys(sessions)
+  allSids.forEach(sid => {
+    if (sessions[sid] === victim) {
+      sessions[sid] = undefined
+    }
+  })
+})
+
+
+
+
+
+
+
+
 
 app.post("/check-login", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid
@@ -74,6 +103,9 @@ app.post("/instant-regret", (req, res) => {
   })
   res.send(JSON.stringify({ success: true }))
 })
+
+
+
 
 app.post("/logout", (req, res) => {
   let sessionId = req.cookies.sid

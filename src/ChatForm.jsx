@@ -27,6 +27,12 @@ class UnconnectedChatForm extends Component {
     regret = () => {
         fetch("/instant-regret", { method: "POST" })
     }
+    kickout = () => {
+        let username = window.prompt("who?")
+        let data = new FormData()
+        data.append("name", username)
+        fetch("/kickout", { method: "POST", body: data })
+    }
     render = () => {
         return (
             <div>
@@ -37,6 +43,7 @@ class UnconnectedChatForm extends Component {
                 <button onClick={this.regret}>delete my messages</button>
 
                 <button onClick={this.logout}>logout</button>
+                <button onClick={this.kickout}>kickout</button>
             </div>)
     }
 }
